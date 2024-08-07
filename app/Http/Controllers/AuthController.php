@@ -21,7 +21,7 @@ class AuthController extends Controller
 
     public function authenticate(AuthRequest $request): JsonResponse
     {
-        //todo:not login if user not verified
+        //todo:not login if user not verified email
         if ($token = Auth::attempt(['email' => $request->get('email'), 'password' => $request->get('password')])) {
             // Authentication passed...
             $parseToken = JWTAuth::decode(new Token($token));
@@ -39,5 +39,15 @@ class AuthController extends Controller
     {
         $user = User::query()->create($request->only(['email', 'password', 'name']));
         return ApiResponse::sendResponse(['user' => $user]);
+    }
+
+    public function logout(): JsonResponse
+    {
+        try {
+            auth()->logout(true);
+        } catch (\Exception $e) {
+            throw new ApiException(httpCode:401);
+        }
+        return ApiResponse::sendResponse(['result' => true]);
     }
 }

@@ -25,12 +25,13 @@ class RegisterRequest extends BaseRequest
             'email' => [
                 'required',
                 'string',
-                'email'
+                'email',
+                'unique:users,email'
             ],
             'password' => [
                 'required',
-                'string'
-                //regexp
+                'string',
+                'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])(?=\S+$).{8,}$/'
             ],
             "name" => [
                 'required',
